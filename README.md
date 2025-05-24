@@ -2,27 +2,21 @@
 
 This script automates PostgreSQL database backups, compresses them, and optionally uploads them to an S3-compatible storage (e.g., AWS S3, Cloudflare R2). It supports multiple backup jobs configured via a single JSON file.
 
----
-
-## Features
+## ✨ Features
 
 - Backup multiple PostgreSQL databases.
 - Retry failed backups up to 5 times.
 - Upload to AWS S3 or any S3-compatible service.
 - Automatic cleanup of old local backups.
 
----
-
-## Requirements
+## 🛂 Requirements
 
 - `bash`
 - [`pg_dump`](https://www.postgresql.org/docs/current/app-pgdump.html)
 - [`jq`](https://stedolan.github.io/jq/)
 - [`aws` CLI](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html)
 
----
-
-## Configuration
+## ⚙️ Configuration
 
 Create a `config.json` file in the same directory with the following structure:
 
@@ -43,9 +37,7 @@ Create a `config.json` file in the same directory with the following structure:
 
 You can add multiple entries in the array to back up multiple databases.
 
----
-
-## Usage
+## 🏃 Usage
 
 Make the script executable:
 
@@ -59,7 +51,6 @@ Then run:
 ./backup.sh
 ```
 
----
 
 ## Behavior
 
@@ -67,8 +58,6 @@ Then run:
 - Retries up to 5 times if the `pg_dump` fails.
 - Uploads the backup to the specified S3 bucket (if provided).
 - Deletes backups older than `retention_days`.
-
----
 
 ## Example Output
 
@@ -81,11 +70,18 @@ Upload successful
 Deleting local backups older than 7 days in /home/user/backups ...
 === Finished backup job 1/1 ===
 ```
+## ⏰ Scheduling via Cron
+To run the backup daily at 2:00 AM:
 
----
+```bash
+crontab -e
+```
+Add the line:
+```bash
+0 2 * * * /path/to/backup.sh >> /path/to/backup.log 2>&1
+```
 
-## Notes
+## ⚠️ Notes
 
 - If `aws_access_key_id` or `aws_secret_access_key` are omitted, the script will use the default AWS credentials configured in your environment.
 - If you don’t want to upload to S3, simply omit the `s3_bucket` field.
-```
